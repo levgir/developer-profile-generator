@@ -4,7 +4,7 @@ const axios = require("axios");
 const generateHTML = require("./generateHTML");
 const PDF = require("html-pdf");
 
-function init() {
+function buildProfile() {
     inquirer
         .prompt([
             {
@@ -21,52 +21,40 @@ function init() {
         ])
         .then(function(data) {
             createFile("index.html", generateHTML.createHTML(data));
-            return data;
-        })
-        .then(function(data) {
             const queryURL = `https://api.github.com/users/${data.username}`;
             axios.get(queryURL).then(function(res) {
-                addToFile('index.html', generateHTML.gitData(res));
+                addToFile('index.html', generateHTML.devInfo(res));
             })
             return data;
         })
+
         .then(function(data) {
             const queryURL2 =  `https://api.github.com/users/${data.username}/starred`;
             axios.get(queryURL2).then(function(res){
                 const starCount = res.data.length;
-                finishFile('index.html', generateHTML.gitData2(starCount));
+                finishFile('index.html', generateHTML.devInfo2(starCount));
             })
         })
 }
 
-async function createPDF() {
-    var readHTML = fs.readFileSync('index.html', 'utf8');
-    var choices = { format: 'A4'};
-
-    PDF.create(readHTML, choices).toFile('./sample.pdf', function (err, res) {
-        if (err) return console.log(err);
-        console.log(res)
-    })
-}
-
-function createFile(HTML, data) {
-    fs.writeFile(HTML, data, function(err) {
+function createFile(html, data) {
+    fs.writeFile(html, data, function(err) {
         if (err) {
             return Error;
         }
     });
 }
 
-function addToFile (HTML, data) {
-    fs.appendFile(HTML, data, function(err) {
+function addToFile (html, data) {
+    fs.appendFile(html, data, function(err) {
         if (err) {
             return Error
         }
     });
 }
 
-function finishFile (HTML, data) {
-    fs.appendFile(HTML, data, function(err) {
+function finishFile (html, data) {
+    fs.appendFile(html, data, function(err) {
         if (err) {
             return Error
         }else{
@@ -75,6 +63,16 @@ function finishFile (HTML, data) {
     });
 }
 
-init();
+async function createPDF() {
+    var readHTML = fs.readFileSync('index.html', 'utf8');
+    var format = { format: 'A4'};
+
+    PDF.create(readHTML, format).toFile('./devloperProfile.pdf', function (err, res) {
+        if (err) return console.log(err);
+        console.log(res)
+    })
+}
+
+buildProfile();
 
 

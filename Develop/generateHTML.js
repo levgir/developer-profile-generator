@@ -175,7 +175,7 @@ function createHTML(data) {
       </head>`;
         }
 
-      function gitData(res) {
+      function devInfo(res) {
         return `<body>
         <div class="row wrapper">
           <div class="photo-header">
@@ -213,7 +213,7 @@ function createHTML(data) {
               <h6>${res.data.following}</h6>
             </div>`
       } 
-      function gitData2(starCount) {
+      function devInfo2(starCount) {
         return `
           <div class="card">
               <h3 id="stars">GitHub Stars</h3>
@@ -228,6 +228,6 @@ function createHTML(data) {
 
       module.exports = {
         createHTML: createHTML,
-        gitData: gitData,
-        gitData2: gitData2,
+        devInfo: devInfo,
+        devInfo2: devInfo2,
       };
