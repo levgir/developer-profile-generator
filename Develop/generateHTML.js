@@ -25,7 +25,7 @@ const colors = {
   }
 };
 
-function generateHTML(data) {
+function createHTML(data) {
   return `<!DOCTYPE html>
 <html lang="en">
    <head>
@@ -172,49 +172,62 @@ function generateHTML(data) {
           } 
          }
       </style>
-      <body>
-  <div class="row wrapper">
-    <div class="photo-header">
-      <img src="" alt="" class="photo-header">
+      </head>`;
+        }
 
-      <h1>Hi!</h1>
-      <h2 id="userName">My name is Levi Giraud</h2>
-      <div class="row" style="width:100%; text-align:center">
-        <h4 style="width: 100%" id="currentJob">Currently @ Denver PD</h4>
-      </div>
-      <div class="links-nav" style="width: 50%; text-align: center;">
-        <a href="" class="nav-link">Current City</a>
-        <a href="" class="nav-link">GitHub</a>
-        <a href="" class="nav-link">LinkedIn</a>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="row" style="width:100%; text-align:center">
-      <h1 style="width:100%; text-align:center">I build things and teach people to code!</h1>
-    </div>
-    <div class="row" style="width:100%; text-align:center">
-      <div class="card">
-        <h3>Public Repositories</h3>
-        <h6 id="repos">#</h6>
-      </div>
-      <div class="card">
-        <h3 id="followers">Followers</h3>
-        <h6>#</h6>
-      </div>
-    </div>
-    <div class="row" style="width:100%; text-align:center">
-      <div class="card">
-        <h3 id="stars">GitHub Stars</h3>
-        <h6>#</h6>
-      </div>
-      <div class="card">
-        <h3 id="followers">Following</h3>
-        <h6>#</h6>
-      </div>
-    </div>
-  </div>
-  <div class="row wrapper" style="height: 33%;"></div>
+      function gitData(res) {
+        return `<body>
+        <div class="row wrapper">
+          <div class="photo-header">
+            <img src="${res.data.avatar_url}" alt="${res.data.name}'s photo" class="photo-header">
+      
+            <h1>Hi!</h1>
+            <h2 id="userName">${res.data.name}</h2>
+            <div class="row" style="width:100%; text-align:center">
+              <h4 style="width: 100%" id="currentJob">${res.data.company}</h4>
+            </div>
+            <div class="links-nav" style="width: 50%; text-align: center;">
+              <a href="https://www.google.com/maps/place/${res.data.location}" class="nav-link">${res.data.location}</a>
+              <a href="${res.data.html_url}" class="nav-link">My GitHub</a>
+              <a href="${res.data.blog}" class="nav-link">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row" style="width:100%; text-align:center">
+            <h1 style="width:100%; text-align:center">${res.data.bio}</h1>
+          </div>
+          <div class="row" style="width:100%; text-align:center">
+            <div class="card">
+              <h3>Public Repositories</h3>
+              <h6 id="repos">${res.data.public_repos}</h6>
+            </div>
+            <div class="card">
+              <h3 id="followers">Followers</h3>
+              <h6>${res.data.followers}</h6>
+            </div>
+          </div>
+          <div class="row" style="width:100%; text-align:center">
+          <div class="card">
+              <h3 id="followers">Following</h3>
+              <h6>${res.data.following}</h6>
+            </div>`
+      } 
+      function gitData2(starCount) {
+        return `
+          <div class="card">
+              <h3 id="stars">GitHub Stars</h3>
+              <h6>${starCount}</h6>
+            </div>  
+          </div>
+        </div>
+        <div class="row wrapper" style="height: 33%;"></div>   
+      </body>
+      </html>`;
+      }
 
-</body>`
-}
+      module.exports = {
+        createHTML: createHTML,
+        gitData: gitData,
+        gitData2: gitData2,
+      };
